@@ -25,13 +25,18 @@ function displayCurrentTemp(response) {
   document.querySelector("#tempNow").innerHTML = Math.round(
     response.data.main.temp
   );
+  document.querySelector("#weatherDescription").innerHTML =
+    response.data.weather[0].description;
+  document.querySelector("#windSpeed").innerHTML = Math.round(
+    response.data.wind.speed
+  );
 }
 
 function changeCity(event) {
   event.preventDefault();
   let apiKey = "25fad9f7e87157d33dde0f82ab269ee8";
   let city = document.querySelector("#city-entered").value;
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
   axios.get(apiUrl).then(displayCurrentTemp);
 }
 

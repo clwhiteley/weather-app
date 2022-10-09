@@ -30,6 +30,10 @@ footer {
   padding: 10px;
 }
 
+.col-4 {
+  text-transform: capitalize;
+}
+
 .tempNow {
   margin: 0 auto;
   padding: 0;
