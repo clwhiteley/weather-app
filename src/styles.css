@@ -72,3 +72,7 @@ footer {
   cursor: default;
   color: black;
 }
+
+.day-of-week {
+  font-weight: bold;
+}
