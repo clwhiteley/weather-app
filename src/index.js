@@ -21,12 +21,12 @@ function currentTime() {
 }
 
 function displayCurrentTemp(response) {
-  document.querySelector("#placeholder").innerHTML = response.data.name;
+  document.querySelector("#placeholder").innerHTML = response.data.city;
   document.querySelector("#tempNow").innerHTML = Math.round(
-    response.data.main.temp
+    response.data.temperature.current
   );
   document.querySelector("#weatherDescription").innerHTML =
-    response.data.weather[0].description;
+    response.data.condition.description;
   document.querySelector("#windSpeed").innerHTML = Math.round(
     response.data.wind.speed
   );
@@ -34,17 +34,19 @@ function displayCurrentTemp(response) {
     .querySelector("#icon")
     .setAttribute(
       "src",
-      `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+      `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
     );
 
-  fTemp = Math.round(response.data.main.temp);
+  fTemp = Math.round(response.data.temperature.current);
+
+  displayForecast();
 }
 
 function changeCity(event) {
   event.preventDefault();
-  let apiKey = "25fad9f7e87157d33dde0f82ab269ee8";
+  let apiKey = "5340a3bf04actcea1o8a948a8a2ba809";
   let city = document.querySelector("#city-entered").value;
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=imperial`;
   axios.get(apiUrl).then(displayCurrentTemp);
 }
 
@@ -61,6 +63,11 @@ function showF(event) {
   fLink.classList.add("active");
   celsiusLink.classList.remove("active");
   document.querySelector("#tempNow").innerHTML = fTemp;
+}
+
+function displayForecast() {
+  let forecastElement = document.querySelector("#forecast");
+  forecastElement.innerHTML = "forecast";
 }
 
 let search = document.querySelector("#city-search");
