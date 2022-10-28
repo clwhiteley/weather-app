@@ -38,8 +38,6 @@ function displayCurrentTemp(response) {
     );
 
   fTemp = Math.round(response.data.temperature.current);
-
-  displayForecast();
 }
 
 function changeCity(event) {
@@ -66,9 +64,33 @@ function showF(event) {
 }
 
 function displayForecast() {
-  let forecastElement = document.querySelector("#forecast");
-  forecastElement.innerHTML = "forecast";
+  let forecastElement = document.querySelector("#weather-forecast");
+  let forecastHTML = '<div class="row">';
+  let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue"];
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+            <div class="col-2">
+             <div class="weather-forecast-date" id="forecast-date">${day}</div>
+             <img 
+             src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/few-clouds-day.png"
+             alt="icon"
+             id="forecast-icon" />
+              <div class="weather-forecast-temps">
+                <span class="weather-forecast-max">H: 78°F</span>
+             <br />
+             <span class="weather-forecast-min">L: 58°F</span>
+             </div>
+            </div>
+            `;
+  });
+
+  forecastHTML = forecastHTML + "</div";
+  forecastElement.innerHTML = forecastHTML;
 }
+
+displayForecast();
 
 let search = document.querySelector("#city-search");
 search.addEventListener("submit", changeCity);
