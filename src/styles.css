@@ -73,6 +73,7 @@ footer {
   color: black;
 }
 
-.day-of-week {
+.weather-forecast-date {
   font-weight: bold;
+  margin: 10px 10px 0px 10px;
 }
