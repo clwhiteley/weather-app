@@ -39,6 +39,7 @@ function displayCurrentTemp(response) {
 
   fTemp = Math.round(response.data.temperature.current);
   currentTime();
+  getForecast();
 }
 
 function changeCity(event) {
@@ -64,6 +65,13 @@ function showF(event) {
   document.querySelector("#tempNow").innerHTML = fTemp;
 }
 
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return days[day];
+}
+
 function getForecast() {
   let apiKey = "5340a3bf04actcea1o8a948a8a2ba809";
   let city = document.querySelector("#city-entered").value;
@@ -72,33 +80,42 @@ function getForecast() {
 }
 
 function displayForecast(response) {
+  let forecast = response.data.daily;
   let forecastElement = document.querySelector("#weather-forecast");
   let forecastHTML = '<div class="row">';
-  let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue"];
-  days.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `
+
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `
             <div class="col-2">
-             <div class="weather-forecast-date" id="forecast-date">${day}</div>
+             <div class="weather-forecast-date" id="forecast-date">${formatDay(
+               forecastDay.time
+             )}</div>
              <img 
-             src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/few-clouds-day.png"
+             src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+               forecastDay.condition.icon
+             }.png"
              alt="icon"
              id="forecast-icon" />
               <div class="weather-forecast-temps">
-                <span class="weather-forecast-max">H: 78°F</span>
+                <span class="weather-forecast-max">H: ${Math.round(
+                  forecastDay.temperature.maximum
+                )}°F</span>
              <br />
-             <span class="weather-forecast-min">L: 58°F</span>
+             <span class="weather-forecast-min">L: ${Math.round(
+               forecastDay.temperature.minimum
+             )}°F</span>
              </div>
             </div>
             `;
+    }
   });
 
   forecastHTML = forecastHTML + "</div";
   forecastElement.innerHTML = forecastHTML;
 }
-
-displayForecast();
 
 let search = document.querySelector("#city-search");
 search.addEventListener("submit", changeCity);
