@@ -38,6 +38,7 @@ function displayCurrentTemp(response) {
     );
 
   fTemp = Math.round(response.data.temperature.current);
+  currentTime();
 }
 
 function changeCity(event) {
@@ -63,7 +64,14 @@ function showF(event) {
   document.querySelector("#tempNow").innerHTML = fTemp;
 }
 
-function displayForecast() {
+function getForecast() {
+  let apiKey = "5340a3bf04actcea1o8a948a8a2ba809";
+  let city = document.querySelector("#city-entered").value;
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=imperial`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
   let forecastElement = document.querySelector("#weather-forecast");
   let forecastHTML = '<div class="row">';
   let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue"];
