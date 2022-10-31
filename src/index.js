@@ -42,27 +42,23 @@ function displayCurrentTemp(response) {
   getForecast();
 }
 
-function changeCity(event) {
-  event.preventDefault();
+function changeCity(city) {
   let apiKey = "5340a3bf04actcea1o8a948a8a2ba809";
-  let city = document.querySelector("#city-entered").value;
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=imperial`;
   axios.get(apiUrl).then(displayCurrentTemp);
 }
 
-function showCelsius(event) {
-  event.preventDefault();
-  fLink.classList.remove("active");
-  celsiusLink.classList.add("active");
-  let celsiusTemp = (fTemp - 32) * (5 / 9);
-  document.querySelector("#tempNow").innerHTML = Math.round(celsiusTemp);
+function getForecast(city) {
+  let apiKey = "5340a3bf04actcea1o8a948a8a2ba809";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=imperial`;
+  axios.get(apiUrl).then(displayForecast);
 }
 
-function showF(event) {
+function handleSubmit(event) {
   event.preventDefault();
-  fLink.classList.add("active");
-  celsiusLink.classList.remove("active");
-  document.querySelector("#tempNow").innerHTML = fTemp;
+  let city = document.querySelector("#city-entered");
+  changeCity(city.value);
+  getForecast(city.value);
 }
 
 function formatDay(timestamp) {
@@ -70,13 +66,6 @@ function formatDay(timestamp) {
   let day = date.getDay();
   let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   return days[day];
-}
-
-function getForecast() {
-  let apiKey = "5340a3bf04actcea1o8a948a8a2ba809";
-  let city = document.querySelector("#city-entered").value;
-  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=imperial`;
-  axios.get(apiUrl).then(displayForecast);
 }
 
 function displayForecast(response) {
@@ -118,14 +107,8 @@ function displayForecast(response) {
 }
 
 let search = document.querySelector("#city-search");
-search.addEventListener("submit", changeCity);
+search.addEventListener("submit", handleSubmit);
 
 currentTime();
-
-let fTemp = "null";
-
-let celsiusLink = document.querySelector("#celsiusLink");
-celsiusLink.addEventListener("click", showCelsius);
-
-let fLink = document.querySelector("#fLink");
-fLink.addEventListener("click", showF);
+changeCity("Seattle");
+getForecast("Seattle");
